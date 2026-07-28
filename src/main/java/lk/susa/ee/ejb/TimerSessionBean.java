@@ -16,22 +16,27 @@ public class TimerSessionBean {
     private TimerService timerService;
 
     public Task createTimer(){
-        //timerService.createTimer(10000,5000L,"Test timer");
+        //timerService.createTimer(10000L,5000L,"Test timer");
 
         TimerConfig timerConfig = new TimerConfig();
 
-        String taskID = UUID.randomUUID().toString();
-        Task task = new Task(taskID,"Simple Task");
+        String taskId = UUID.randomUUID().toString();
+        Task task = new Task(taskId, "Simple Task");
 
         timerConfig.setInfo(task);
         timerConfig.setPersistent(true);
 
-        ScheduleExpression se = new ScheduleExpression();
-        se.hour("0");
-        se.minute("0");
-        se.second("0");
+        //timerService.createSingleActionTimer(10000L, timerConfig);
 
-        timerService.createSingleActionTimer(10000L,timerConfig);
+        ScheduleExpression se = new ScheduleExpression();
+        se.month("2,4,6,8,10,12");
+
+        se.hour("*");
+        se.minute("*");
+        se.second("5");
+
+        timerService.createCalendarTimer(se, timerConfig);
+
         return task;
     }
 
@@ -47,10 +52,10 @@ public class TimerSessionBean {
 //    }
 
     public void cancelTimer(String taskId){
-        timerService.getAllTimers().forEach((Timer timer)->{
+        timerService.getAllTimers().forEach((timer)->{
 
             Serializable info = timer.getInfo();
-            if(info instanceof  Task && ((Task) info).getTaskId().equals(taskId)){
+            if(info instanceof Task && ((Task)info).getTaskId().equals(taskId)){
                 timer.cancel();
             }
 

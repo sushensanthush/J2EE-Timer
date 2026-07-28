@@ -4,21 +4,22 @@ import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lk.susa.ee.ejb.TimerSessionBean;
+import lk.susa.ee.Task;
 
 import java.io.IOException;
 
-
-@WebServlet(value = "/test-timer")
-public class TestTimer extends HttpServlet{
+@WebServlet("/test-timer")
+public class TestTimer extends HttpServlet {
 
     @EJB
-    private TimerSessionBean timerService;
+    private TimerSessionBean timerSessionBean;
 
     @Override
-    protected void service(jakarta.servlet.http.HttpServletRequest req, jakarta.servlet.http.HttpServletResponse resp) throws ServletException, IOException {
-       Task task = timerService.createTimer();
-       resp.getWriter().write("Task created:"+task.getTaskId());
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Task task = timerSessionBean.createTimer();
+        resp.getWriter().write("Task created : "+task.getTaskId());
     }
-
 }
