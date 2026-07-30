@@ -1,6 +1,7 @@
 package lk.susa.ee.ejb;
 
 import jakarta.ejb.Schedule;
+import jakarta.ejb.Schedules;
 import jakarta.ejb.Stateless;
 
 @Stateless
@@ -28,6 +29,18 @@ public class AutoTimerSessionBean {
         }
 
 
+        @Schedule(dayOfMonth ="Last Fri")
+        public void runOnLastFriday(){
+            System.out.println("Running on last Friday...");
+        }
+
+        @Schedules({
+                @Schedule(dayOfWeek = "Mon-Fri", hour = "8-17"),
+                @Schedule(dayOfWeek = "Sat,Sun", hour = "12-17")
+        })
+        public void executeTask(){
+            System.out.println("Executing Task...");
+        }
 
     }
 
